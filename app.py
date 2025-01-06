@@ -1,5 +1,6 @@
 import streamlit as st
 from fpdf import FPDF
+import io
 
 # Lista de questões
 questions = [
@@ -64,23 +65,34 @@ if scores:
         for i, priority in enumerate(sorted(priorities), start=1):
             st.write(f"{i}. {priority}")
 
-        # Botão para gerar o arquivo PDF
-        if st.button("Generate PDF"):
-            pdf = FPDF()
-            pdf.add_page()
-            pdf.set_font("Arial", size=12)
-            pdf.cell(200, 10, txt="Priority Items", ln=True, align='C')
-            pdf.ln(10)
-            for i, priority in enumerate(sorted(priorities), start=1):
-                pdf.cell(0, 10, txt=f"{i}. {priority}", ln=True)
+        # Geração do PDF
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
+        pdf.cell(200, 10, txt="Priority Items", ln=True, align='C')
+        pdf.ln(10)
+        for i, priority in enumerate(sorted(priorities), start=1):
+            pdf.cell(0, 10, txt=f"{i}. {priority}", ln=True)
 
-            pdf.output("priorities.pdf")
-            st.success("The file 'priorities.pdf' has been generated with the priority items.")
+        # Salvar em memória para download
+        pdf_buffer = io.BytesIO()
+        pdf.output(pdf_buffer)
+        pdf_buffer.seek(0)
+
+        # Botão para baixar o PDF
+        st.download_button(
+            label="Download PDF",
+            data=pdf_buffer,
+            file_name="priorities.pdf",
+            mime="application/pdf"
+        )
     else:
         st.write("No items were classified as priority.")
 
 # Botão para finalizar
 if st.button("Finish"):
     st.write("Thank you for participating!")
+
+
 
 
