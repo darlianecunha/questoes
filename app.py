@@ -1,12 +1,4 @@
 import streamlit as st
-import numpy as np
-
-# Função para calcular a pontuação final
-def calculate_final_score(scores):
-    max_score = len(scores) * 10  # Pontuação máxima se todas as variáveis tiverem nota 10
-    total_score = sum(scores)
-    percentage_score = (total_score / max_score) * 100 if max_score > 0 else 0
-    return percentage_score
 
 # Lista de questões
 questions = [
@@ -62,19 +54,20 @@ for i, question in enumerate(questions):
     scores.append(score)
     categories.append(question)
 
-# Calcula a pontuação final
+# Identifica prioridades
 if scores:
-    percentage_score = calculate_final_score(scores)
-    st.write(f"Pontuação Final: {percentage_score:.2f}%")
-
-    # Identifica prioridades
     st.subheader("Priority")
     priorities = [question for question, score in zip(categories, scores) if score >= 8]
     if priorities:
         st.write("The following items have been classified as priorities:")
         for i, priority in enumerate(sorted(priorities), start=1):
             st.write(f"{i}. {priority}")
-    else:
-        st.write("No items were classified as priority")
 
+        # Geração do arquivo TXT
+        with open("priorities.txt", "w") as f:
+            for i, priority in enumerate(sorted(priorities), start=1):
+                f.write(f"{i}. {priority}\n")
+        st.success("A file 'priorities.txt' has been generated with the priority items.")
+    else:
+        st.write("No items were classified as priority.")
 
