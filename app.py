@@ -1,6 +1,5 @@
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Função para calcular a pontuação final
 def calculate_final_score(scores):
@@ -8,24 +7,6 @@ def calculate_final_score(scores):
     total_score = sum(scores)
     percentage_score = (total_score / max_score) * 100 if max_score > 0 else 0
     return percentage_score
-
-# Função para plotar o gráfico radar
-def plot_radar_chart(scores, categories):
-    if len(scores) != len(categories):
-        st.error("O número de pontuações e categorias não coincide.")
-        return None
-
-    values = scores + scores[:1]  # Repetir o primeiro valor para fechar o círculo
-    angles = np.linspace(0, 2 * np.pi, len(scores), endpoint=False).tolist()
-    angles += angles[:1]  # Repetir o primeiro ângulo para fechar o gráfico
-
-    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
-    ax.fill(angles, values, color='teal', alpha=0.25)
-    ax.plot(angles, values, color='teal', linewidth=2)
-    ax.set_yticklabels([])
-    ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(categories)
-    return fig
 
 # Lista de questões
 questions = [
@@ -75,26 +56,25 @@ st.markdown("<h1 style='color: darkblue;'>Relationship Questions</h1>", unsafe_a
 scores = []
 categories = []
 
-st.write("Please rate the following questions on a scale of 1 to 10 (1: Strongly disagree, 10: Strongly agree")
+st.write("Avalie as seguintes questões em uma escala de 1 a 10 (1: Discordo totalmente, 10: Concordo totalmente)")
 for i, question in enumerate(questions):
     score = st.slider(f"{i+1}. {question}", 1, 10, 5)
     scores.append(score)
-    categories.append(f"Q{i+1}")
+    categories.append(question)
 
 # Calcula a pontuação final
 if scores:
     percentage_score = calculate_final_score(scores)
     st.write(f"Pontuação Final: {percentage_score:.2f}%")
 
-    # Exibe o gráfico radar
-    st.subheader("Gráfico Radar")
-    radar_chart = plot_radar_chart(scores, categories)
-    if radar_chart:
-        st.pyplot(radar_chart)
+    # Identifica prioridades
+    st.subheader("Prioridades")
+    priorities = [question for question, score in zip(categories, scores) if score >= 8]
+    if priorities:
+        st.write("Os itens a seguir foram classificados como prioridades:")
+        for i, priority in enumerate(sorted(priorities), start=1):
+            st.write(f"{i}. {priority}")
+    else:
+        st.write("Nenhum item foi classificado como prioridade.")
 
-# Rodapé com fonte e créditos
-st.write("---")
-st.markdown(
-    "<p><strong>Ferramenta desenvolvida para explorar dinâmicas de relacionamento.</strong></p>", 
-    unsafe_allow_html=True
-)
+
