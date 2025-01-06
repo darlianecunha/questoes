@@ -56,7 +56,7 @@ st.markdown("<h1 style='color: darkblue;'>Relationship Questions</h1>", unsafe_a
 scores = []
 categories = []
 
-st.write("Avalie as seguintes questões em uma escala de 1 a 10 (1: Discordo totalmente, 10: Concordo totalmente)")
+st.write(Please rate the following questions on a scale of 1 to 10 (1: Strongly disagree, 10: Strongly agree")
 for i, question in enumerate(questions):
     score = st.slider(f"{i+1}. {question}", 1, 10, 5)
     scores.append(score)
@@ -68,13 +68,13 @@ if scores:
     st.write(f"Pontuação Final: {percentage_score:.2f}%")
 
     # Identifica prioridades
-    st.subheader("Prioridades")
+    st.subheader("Priority")
     priorities = [question for question, score in zip(categories, scores) if score >= 8]
     if priorities:
-        st.write("Os itens a seguir foram classificados como prioridades:")
+        st.write("The following items have been classified as priorities:")
         for i, priority in enumerate(sorted(priorities), start=1):
             st.write(f"{i}. {priority}")
     else:
-        st.write("Nenhum item foi classificado como prioridade.")
+        st.write("No items were classified as priority")
 
 
