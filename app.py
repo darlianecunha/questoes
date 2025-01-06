@@ -1,4 +1,5 @@
 import streamlit as st
+from fpdf import FPDF
 
 # Lista de questões
 questions = [
@@ -48,7 +49,7 @@ st.markdown("<h1 style='color: darkblue;'>Relationship Questions</h1>", unsafe_a
 scores = []
 categories = []
 
-st.write("Please rate the following questions on a scale of 1 to 10 (1: Strongly disagree, 10: Strongly agree")
+st.write("Please rate the following questions on a scale of 1 to 10 (1: Strongly disagree, 10: Strongly agree)")
 for i, question in enumerate(questions):
     score = st.slider(f"{i+1}. {question}", 1, 10, 5)
     scores.append(score)
@@ -63,11 +64,23 @@ if scores:
         for i, priority in enumerate(sorted(priorities), start=1):
             st.write(f"{i}. {priority}")
 
-        # Geração do arquivo TXT
-        with open("priorities.txt", "w") as f:
+        # Botão para gerar o arquivo PDF
+        if st.button("Generate PDF"):
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_font("Arial", size=12)
+            pdf.cell(200, 10, txt="Priority Items", ln=True, align='C')
+            pdf.ln(10)
             for i, priority in enumerate(sorted(priorities), start=1):
-                f.write(f"{i}. {priority}\n")
-        st.success("A file 'priorities.txt' has been generated with the priority items.")
+                pdf.cell(0, 10, txt=f"{i}. {priority}", ln=True)
+
+            pdf.output("priorities.pdf")
+            st.success("The file 'priorities.pdf' has been generated with the priority items.")
     else:
         st.write("No items were classified as priority.")
+
+# Botão para finalizar
+if st.button("Finish"):
+    st.write("Thank you for participating!")
+
 
