@@ -56,7 +56,7 @@ st.markdown("<h1 style='color: darkblue;'>Relationship Questions</h1>", unsafe_a
 scores = []
 categories = []
 
-st.write(Please rate the following questions on a scale of 1 to 10 (1: Strongly disagree, 10: Strongly agree")
+st.write("Please rate the following questions on a scale of 1 to 10 (1: Strongly disagree, 10: Strongly agree")
 for i, question in enumerate(questions):
     score = st.slider(f"{i+1}. {question}", 1, 10, 5)
     scores.append(score)
