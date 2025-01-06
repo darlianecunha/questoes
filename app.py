@@ -76,7 +76,7 @@ if scores:
 
         # Salvar em memória para download
         pdf_buffer = io.BytesIO()
-        pdf.output(pdf_buffer)
+        pdf_buffer.write(pdf.output(dest='S').encode('latin1'))
         pdf_buffer.seek(0)
 
         # Botão para baixar o PDF
@@ -92,7 +92,5 @@ if scores:
 # Botão para finalizar
 if st.button("Finish"):
     st.write("Thank you for participating!")
-
-
 
 
