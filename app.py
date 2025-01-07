@@ -91,11 +91,12 @@ if scores:
         pdf.cell(200, 10, txt="Priority Items", ln=True, align='C')
         pdf.ln(10)
         for i, (priority, score) in enumerate(sorted(priorities, key=lambda x: -x[1]), start=1):
-            pdf.cell(0, 10, txt=f"{i}. {priority} (Score: {score})".encode('latin1', 'replace').decode('latin1'), ln=True)
+            pdf.cell(0, 10, txt=f"{i}. {priority} (Score: {score})", ln=True)
 
         # Salvar em memória para download
         pdf_buffer = io.BytesIO()
-        pdf.output(pdf_buffer)
+        pdf.output(dest='S').encode('latin1')  # Especifica a saída do PDF como string binária
+        pdf_buffer.write(pdf.output(dest='S').encode('latin1'))
         pdf_buffer.seek(0)
 
         # Botão para baixar o PDF
@@ -106,7 +107,8 @@ if scores:
             mime="application/pdf"
         )
     else:
-        st.write("No items were classified as priority.")        
+        st.write("No items were classified as priority.")
+        
 # Botão para finalizar
 if st.button("Finish"):
     st.write("Tool developed by Darliane Cunha")
