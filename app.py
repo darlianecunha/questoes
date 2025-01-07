@@ -56,8 +56,8 @@ questions = [
 # Título da aplicação
 st.markdown("""
 <div style='background-color:#f5f5f5; padding:20px;'>
-    <h1 style='color: #4CAF50; text-align: center;'>Relationship Questions</h1>
-    <p style='text-align: center;'>💖 Please rate the following questions on a scale of 1 to 10 (1: Strongly disagree, 10: Strongly agree) 💖</p>
+    <h1 style='color: #003366; text-align: center;'>Relationship Questions</h1>
+    <p style='text-align: center;'>Please rate the following questions on a scale of 1 to 10 (1: Strongly disagree, 10: Strongly agree)</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -74,7 +74,7 @@ for i, question in enumerate(questions):
 if scores:
     st.markdown("""
     <div style='background-color:#e8f5e9; padding:15px;'>
-        <h2 style='color: #388E3C;'>Priority Items</h2>
+        <h2 style='color: #003366;'>Priority Items</h2>
     </div>
     """, unsafe_allow_html=True)
 
